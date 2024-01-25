@@ -1,0 +1,42 @@
+version: '3.8'
+services:
+  app:
+    image: weather_api:local
+    build:
+      context: src/App
+      dockerfile: Dockerfile
+      args:
+        PROJECT_VERSION: 0.0.0
+        VERSION_SUFFIX: local
+    ports:
+      - '4201:8080'
+    expose:
+      - 4201
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+      CONNECTIONSTRINGS__DEFAULTCONNECTION: Server=db;Port=5432;User Id=postgres;Password=postgres;Database=weather_db
+      Logging__LogLevel__Default: Debug
+    networks:
+      - local-network
+
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: weather_db
+      POSTGRES_PASSWORD: postgres
+    networks:
+      - local-network
+    ports:
+      - '5432:5432'
+    healthcheck:
+      test: pg_isready -U postgres
+      interval: 10s
+      timeout: 20s
+      retries: 5
+
+networks:
+  local-network:
+    driver: bridge

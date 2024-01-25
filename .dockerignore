@@ -1,0 +1,17 @@
+.nuke/
+.github/
+.idea/
+.vscode/
+.git/
+node_modules/
+artifacts/
+tests/
+docs/
+.gitignore
+.gitattributes
+nuget.config
+build.ps1
+build.sh
+coverlet.runsettings
+docker-compose.yml
+appsettings.Local.json

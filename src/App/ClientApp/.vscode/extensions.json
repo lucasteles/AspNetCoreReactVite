@@ -1,0 +1,8 @@
+{
+    "recommendations": [
+        "orta.vscode-jest",
+        "antfu.vite",
+        "antfu.browse-lite",
+        "dbaeumer.vscode-eslint"
+    ]
+}
