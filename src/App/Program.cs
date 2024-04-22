@@ -1,8 +1,8 @@
 using System.Text.Json.Serialization;
-using Microsoft.AspNetCore.HttpLogging;
-using Microsoft.EntityFrameworkCore;
 using AspNetCoreReactVite;
 using AspNetCoreReactVite.Data;
+using Microsoft.AspNetCore.HttpLogging;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Configuration.AddEnvironmentVariables();
@@ -21,7 +21,7 @@ builder.Services
                              | HttpLoggingFields.RequestProperties
                              | HttpLoggingFields.ResponseStatusCode)
     .AddEndpointsApiExplorer()
-    .AddSwaggerGen(options => { options.SupportNonNullableReferenceTypes(); })
+    .AddSwaggerGen(options => options.SupportNonNullableReferenceTypes())
     .ConfigureHttpJsonOptions(options => options
         .SerializerOptions.Converters.Add(new JsonStringEnumConverter()))
     .Configure<Microsoft.AspNetCore.Mvc.JsonOptions>(o => o // For Swagger
@@ -34,7 +34,7 @@ builder.Services
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
-if (!app.Environment.IsDevelopment())
+if (app.Environment.IsDevelopment())
 {
     app.UseDeveloperExceptionPage();
     app.UseMigrationsEndPoint();
@@ -60,9 +60,8 @@ var api = app.MapGroup("api");
 api.MapRoutes();
 app.MapFallbackToFile("index.html");
 
-await using (var scope = app.Services.CreateAsyncScope())
-{
-    await scope.ServiceProvider.GetRequiredService<AppDbContext>().Database.MigrateAsync();
-}
+if (app.Environment.IsDevelopment())
+    await using (var scope = app.Services.CreateAsyncScope())
+        await scope.ServiceProvider.GetRequiredService<AppDbContext>().Database.MigrateAsync();
 
 app.Run();

@@ -1,4 +1,4 @@
-﻿namespace AspNetCoreReactVite.Models;
+namespace AspNetCoreReactVite.Models;
 
 public enum WeatherSummary
 {

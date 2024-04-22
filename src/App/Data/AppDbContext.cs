@@ -1,4 +1,4 @@
-﻿using AspNetCoreReactVite.Models;
+using AspNetCoreReactVite.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace AspNetCoreReactVite.Data;
